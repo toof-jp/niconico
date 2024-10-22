@@ -5,6 +5,7 @@ edition =  "2021"
 license = "MIT"
 description = "A Rust client library for Niconico authentication"
 homepage = "https://github.com/toof-jp/niconico"
+documentation = "https://docs.rs/niconico"
 repository = "https://github.com/toof-jp/niconico"
 readme = "README.md"
 
