@@ -1,6 +1,7 @@
 # niconico
-![Crates.io Version](https://img.shields.io/crates/v/niconico)
-![docs.rs](https://img.shields.io/docsrs/niconico)
+![Crates.io Version](https://img.shields.io/crates/v/niconico?link=https%3A%2F%2Fcrates.io%2Fcrates%2Fniconico)
+![docs.rs](https://img.shields.io/docsrs/niconico?link=https%3A%2F%2Fdocs.rs%2Fniconico%2Flatest%2Fniconico%2F)
+
 
 A Rust client library for Niconico authentication
 ```rust
