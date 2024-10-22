@@ -1,6 +1,6 @@
-//! NicoNico login functionality module
+//! Niconico login functionality module
 //!
-//! This module provides functionality to authenticate with the NicoNico video platform
+//! This module provides functionality to authenticate with the Niconico video platform
 //! and obtain a user session token.
 //!
 //! # Examples
@@ -27,7 +27,7 @@ use secrecy::{ExposeSecret, SecretString};
 use serde::Deserialize;
 use thiserror::Error;
 
-/// Credentials required for NicoNico login
+/// Credentials required for Niconico login
 #[derive(Debug, Deserialize)]
 pub struct Credentials {
     /// Email address or telephone number associated with the account
@@ -39,7 +39,7 @@ pub struct Credentials {
 /// Represents a successful login session
 #[derive(Debug)]
 pub struct UserSession {
-    /// Session token received from NicoNico's authentication service
+    /// Session token received from Niconico's authentication service
     pub user_session: SecretString,
 }
 
@@ -66,7 +66,7 @@ pub enum LoginError {
 /// Type alias for the Result of a login attempt
 pub type LoginResult = Result<UserSession, LoginError>;
 
-/// Attempts to log in to NicoNico using the provided credentials
+/// Attempts to log in to Niconico using the provided credentials
 ///
 /// # Arguments
 ///
