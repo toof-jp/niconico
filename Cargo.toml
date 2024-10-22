@@ -1,0 +1,15 @@
+[package]
+name = "niconico"
+version = "0.1.0"
+edition =  "2021"
+
+[dependencies]
+reqwest = "0.12"
+secrecy = { version = "0.10.3", features = ["serde"] }
+serde = { version = "1.0.211", features = ["derive"] }
+thiserror = "1.0.64"
+
+[dev-dependencies]
+dotenvy = "0.15.7"
+envy = "0.4.2"
+tokio = { version = "1", features = ["full"] }
