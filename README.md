@@ -1,4 +1,8 @@
 # niconico
+![Crates.io Version](https://img.shields.io/crates/v/niconico)
+![docs.rs](https://img.shields.io/docsrs/niconico)
+
+A Rust client library for Niconico authentication
 ```rust
 use niconico::{login, Credentials};
 use secrecy::ExposeSecret;
