@@ -1,5 +1,5 @@
 # niconico
-```
+```rust
 use niconico::{login, Credentials};
 use secrecy::ExposeSecret;
 
