@@ -14,6 +14,6 @@ async fn main() {
 
     let user_session = login(credentials).await.unwrap();
 
-    println!("{:?}", user_session.user_session.expose_secret());
+    println!("{:?}", user_session.0.expose_secret());
 }
 ```

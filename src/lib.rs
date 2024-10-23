@@ -8,19 +8,17 @@
 //! ```
 //! use niconico::{login, Credentials};
 //! use secrecy::ExposeSecret;
-//! 
+//!
 //! #[tokio::main]
 //! async fn main() {
 //!     dotenvy::dotenv().ok();
 //!     let credentials = envy::from_env::<Credentials>().unwrap();
-//! 
+//!
 //!     let user_session = login(credentials).await.unwrap();
-//! 
-//!     println!("{:?}", user_session.user_session.expose_secret());
+//!
+//!     println!("{:?}", user_session.0.expose_secret());
 //! }
 //! ```
-
-use std::collections::HashMap;
 
 use reqwest::header;
 use secrecy::{ExposeSecret, SecretString};
@@ -38,10 +36,7 @@ pub struct Credentials {
 
 /// Represents a successful login session
 #[derive(Debug)]
-pub struct UserSession {
-    /// Session token received from Niconico's authentication service
-    pub user_session: SecretString,
-}
+pub struct UserSession(pub SecretString);
 
 /// Possible errors that can occur during the login process
 #[derive(Debug, Error)]
@@ -77,35 +72,24 @@ pub type LoginResult = Result<UserSession, LoginError>;
 /// Returns a `LoginResult` which is either:
 /// * `Ok(UserSession)` containing the session token on successful login
 /// * `Err(LoginError)` containing the specific error that occurred
-///
-/// # Examples
-///
-/// ```
-/// let credentials = Credentials {
-///     mail_tel: "user@example.com".to_string(),
-///     password: "password123".into(),
-/// };
-///
-/// match login(credentials).await {
-///     Ok(session) => println!("Login successful!"),
-///     Err(e) => eprintln!("Login failed: {}", e),
-/// }
-/// ```
 pub async fn login(credentials: Credentials) -> LoginResult {
     let login_url = "https://account.nicovideo.jp/login/redirector";
-    let user_agent = "toof-jp/niconico";
-
-    let mut params = HashMap::new();
-    params.insert("password", credentials.password.expose_secret().to_string());
-    params.insert("mail_tel", credentials.mail_tel);
 
     let res = reqwest::Client::builder()
         .redirect(reqwest::redirect::Policy::none())
-        .user_agent(user_agent)
+        .user_agent("toof-jp/niconico")
         .build()
         .map_err(LoginError::ClientError)?
         .post(login_url)
-        .form(&params)
+        .header(
+            reqwest::header::CONTENT_TYPE,
+            "application/x-www-form-urlencoded",
+        )
+        .body(format!(
+            "mail_tel={}&password={}",
+            credentials.mail_tel,
+            credentials.password.expose_secret()
+        ))
         .send()
         .await
         .map_err(|e| LoginError::NetworkError(e.to_string()))?;
@@ -134,9 +118,7 @@ fn parse_response_header(response_header: &header::HeaderMap) -> LoginResult {
     for header_value in response_header.get_all(header::SET_COOKIE) {
         let cookie_str = header_value.to_str()?;
         if cookie_str.find("user_session=user_session_") == Some(0) {
-            return Ok(UserSession {
-                user_session: cookie_str.into(),
-            });
+            return Ok(UserSession(cookie_str.into()));
         }
     }
 
