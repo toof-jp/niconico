@@ -10,7 +10,7 @@ repository = "https://github.com/toof-jp/niconico"
 readme = "README.md"
 
 [dependencies]
-reqwest = "0.12"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
 secrecy = { version = "0.10.3", features = ["serde"] }
 serde = { version = "1.0.211", features = ["derive"] }
 thiserror = "1.0.64"
